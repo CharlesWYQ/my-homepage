@@ -81,7 +81,7 @@
     <!-- 页面指示器 -->
     <div class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
       <button
-        v-for="(dot, index) in totalSections"
+        v-for="(_, index) in totalSections"
         :key="index"
         @click="scrollToSection(index)"
         :class="[
@@ -117,12 +117,12 @@ const isTransitioning = ref(false)
 
 // 背景配置
 const backgroundConfig = [
-  { type: 'image', src: '/img/military-bg-1.png', alt: '军事训练背景1' },
-  { type: 'image', src: '/img/military-bg-2.jpg', alt: '军事训练背景2' },
+  { type: 'image', src: '/img/background-1.png', alt: '军事训练背景1' },
+  { type: 'image', src: '/img/background-2.jpg', alt: '军事训练背景2' },
   { type: 'default' },
   { type: 'default' },
   { type: 'default' },
-  { type: 'image', src: '/img/military-bg-1.png', alt: '军事训练背景0'  },
+  { type: 'image', src: '/img/background-1.png', alt: '军事训练背景0'  },
 ]
 const totalSections = backgroundConfig.length
 
@@ -239,27 +239,3 @@ onMounted(() => {
   handleScroll()
 })
 </script>
-
-<style scoped>
-/* 背景渐变过渡动画 */
-.fade-background-enter-active,
-.fade-background-leave-active {
-  transition: opacity 1s ease-in-out;
-}
-
-.fade-background-enter-from {
-  opacity: 0;
-}
-
-.fade-background-enter-to {
-  opacity: 1;
-}
-
-.fade-background-leave-from {
-  opacity: 1;
-}
-
-.fade-background-leave-to {
-  opacity: 0;
-}
-</style>
