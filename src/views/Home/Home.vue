@@ -5,75 +5,75 @@
       <!-- 前一个背景（正在淡出） -->
       <transition name="fade-background">
         <component
-          v-if="prevBackground && isTransitioning"
-          :is="prevBackground"
-          key="prev"
-          class="absolute inset-0"
+            v-if="prevBackground && isTransitioning"
+            :is="prevBackground"
+            key="prev"
+            class="absolute inset-0"
         />
       </transition>
 
       <!-- 当前背景（正在淡入） -->
       <transition name="fade-background">
         <component
-          :is="currentBackground"
-          :key="currentSection"
-          class="absolute inset-0"
+            :is="currentBackground"
+            :key="currentSection"
+            class="absolute inset-0"
         />
       </transition>
     </div>
 
     <!-- 固定顶部导航 -->
     <div class="fixed top-0 left-0 right-0 z-50">
-      <SiteHeader />
+      <SiteHeader/>
     </div>
 
     <!-- 滚动容器 -->
     <div
-      ref="scrollContainer"
-      class="h-full overflow-y-auto snap-y snap-mandatory relative z-10"
-      @wheel.prevent="handleWheel"
-      @scroll="handleScroll"
+        ref="scrollContainer"
+        class="h-full overflow-y-auto snap-y snap-mandatory relative z-10"
+        @wheel.prevent="handleWheel"
+        @scroll="handleScroll"
     >
       <!-- 第1屏: Hero -->
       <section class="snap-start snap-always min-h-screen flex items-center justify-center py-8" data-section="0">
         <div class="w-full">
-          <HeroSection />
+          <HeroSection/>
         </div>
       </section>
 
       <!-- 第2屏: Features -->
       <section class="snap-start snap-always min-h-screen flex items-center justify-center py-8" data-section="1">
         <div class="w-full">
-          <FeatureSection />
+          <FeatureSection/>
         </div>
       </section>
 
       <!-- 第3屏: Stats -->
       <section class="snap-start snap-always min-h-screen flex items-center justify-center py-8" data-section="2">
         <div class="w-full">
-          <StatsSection />
+          <StatsSection/>
         </div>
       </section>
 
       <!-- 第4屏: Testimonials -->
       <section class="snap-start snap-always min-h-screen flex items-center justify-center py-8" data-section="3">
         <div class="w-full">
-          <TestimonialSection />
+          <TestimonialSection/>
         </div>
       </section>
 
       <!-- 第5屏: CTA -->
       <section class="snap-start snap-always min-h-screen flex items-center justify-center py-8" data-section="4">
         <div class="w-full">
-          <CtaSection />
+          <CtaSection/>
         </div>
       </section>
 
       <!-- 底部导航页 -->
       <section class="snap-start snap-always min-h-screen flex flex-col justify-end" data-section="5">
         <div class="w-full h-full flex flex-col">
-          <CtaSection />
-          <SiteFooter />
+          <CtaSection/>
+          <SiteFooter/>
         </div>
       </section>
     </div>
@@ -81,23 +81,23 @@
     <!-- 页面指示器 -->
     <div class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
       <button
-        v-for="(dot, index) in totalSections"
-        :key="index"
-        @click="scrollToSection(index)"
-        :class="[
+          v-for="index in totalSections"
+          :key="index"
+          @click="scrollToSection(index-1)"
+          :class="[
           'w-2.5 h-2.5 rounded-full transition-all duration-300',
-          currentSection === index
+          currentSection === index-1
             ? 'bg-cyan-400 scale-125 shadow-lg shadow-cyan-500/50'
             : 'bg-white/20 hover:bg-white/40'
         ]"
-        :aria-label="`跳转到第 ${index + 1} 屏`"
+          :aria-label="`跳转到第 ${index + 1} 屏`"
       ></button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, markRaw, h, watch } from 'vue'
+import {ref, computed, onMounted, markRaw, h, watch} from 'vue'
 import SiteHeader from '../../components/SiteHeader.vue'
 import HeroSection from './components/HeroSection.vue'
 import FeatureSection from './components/FeatureSection.vue'
@@ -111,18 +111,19 @@ import DefaultBackground from './components/DefaultBackground.vue'
 const currentSection = ref(0)
 const prevSection = ref(null)
 const scrollContainer = ref(null)
+scrollContainer.value = undefined;
 let isAnimating = false
 let wheelTimeout = null
 const isTransitioning = ref(false)
 
 // 背景配置
 const backgroundConfig = [
-  { type: 'image', src: '/img/background-1.png', alt: '军事训练背景1' },
-  { type: 'image', src: '/img/background-2.jpg', alt: '军事训练背景2' },
-  { type: 'default' },
-  { type: 'default' },
-  { type: 'default' },
-  { type: 'image', src: '/img/background-1.png', alt: '军事训练背景0'  },
+  {type: 'image', src: '/img/background-1.png', alt: '军事训练背景1'},
+  {type: 'image', src: '/img/background-2.jpg', alt: '军事训练背景2'},
+  {type: 'default'},
+  {type: 'default'},
+  {type: 'default'},
+  {type: 'image', src: '/img/background-1.png', alt: '军事训练背景0'},
 ]
 const totalSections = backgroundConfig.length
 
@@ -239,3 +240,27 @@ onMounted(() => {
   handleScroll()
 })
 </script>
+
+<style>
+/* 背景渐变过渡动画 - 不使用 scoped，因为 transition 类名需要全局可用 */
+.fade-background-enter-active,
+.fade-background-leave-active {
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-background-enter-from {
+  opacity: 0;
+}
+
+.fade-background-enter-to {
+  opacity: 1;
+}
+
+.fade-background-leave-from {
+  opacity: 1;
+}
+
+.fade-background-leave-to {
+  opacity: 0;
+}
+</style>
