@@ -81,7 +81,7 @@
     <!-- 页面指示器 -->
     <div class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3">
       <button
-        v-for="(_, index) in totalSections"
+        v-for="(dot, index) in totalSections"
         :key="index"
         @click="scrollToSection(index)"
         :class="[
